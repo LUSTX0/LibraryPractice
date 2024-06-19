@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLcon.Repositories;
 using System.Net;
+using System.Text.Json;
 
 namespace Logic.Services
 {
@@ -22,6 +23,22 @@ namespace Logic.Services
             _rentRep.AddRent(_rentRep.CreateRent( userId,  bookId,  rentDate,  returnDate));           
         }
 
+        public void AddRentObj(BooksRent rent)
+        {
+            if (rent != null) 
+            { 
+                _rentRep.AddRent(rent);
+            }
+        }
+
+        public void AddRentObj(string rent)
+        {
+            if (rent != null)
+            {
+                BooksRent rentD = JsonSerializer.Deserialize<BooksRent>(rent);
+                AddRentObj(rentD);                
+            }
+        }
         public void CloseRent(int id, DateOnly? endDate)
         {
            _rentRep.CloseRent(_rentRep.GetRentById(id),endDate);

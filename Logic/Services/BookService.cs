@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SQLcon;
 using SQLcon.Models;
 using SQLcon.Repositories;
+using System.Text.Json;
 
 namespace Logic.Services
 {
@@ -38,6 +39,39 @@ namespace Logic.Services
         public void WriteOFFBook(int id, DateOnly date)
         {
            _bRep.WriteOFFBook(id, date);
+        }
+
+        public void AddBookObj(Book book)
+        {
+            if (book != null)
+            {
+                _bRep.AddBook(book);
+            }
+        }
+
+        public void UpdateBookObj(int id, Book book)
+        {
+            if (book != null)
+            {
+                _bRep.UpdateBookObj(id, book);
+            }
+        }
+        public void AddBookObj(string book)
+        {
+            if (book != null)
+            {
+                Book bookD = JsonSerializer.Deserialize<Book>(book);
+                AddBookObj(bookD);
+            }            
+        }
+
+        public void UpdateBookObj(int id, string book)
+        {
+            if (book != null)
+            {
+                Book bookD = JsonSerializer.Deserialize<Book>(book);
+                UpdateBookObj(id,bookD);
+            }
         }
     }
 }

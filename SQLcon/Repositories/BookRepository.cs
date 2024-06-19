@@ -108,5 +108,44 @@ namespace SQLcon.Repositories
             existingBook.ReleaseYear = year;
             return existingBook;
         }
+
+        public void UpdateBookObj(int id, Book book)
+        {
+            var existingBook = GetBookById(id);
+            if (existingBook != null)
+            {
+                if (book.Title != null)
+                {
+                    existingBook.Title = book.Title;
+                }
+                if (book.ReceiptDate != null)
+                {
+                    existingBook.ReceiptDate = book.ReceiptDate;
+                }
+                if (book.WriteOffDate != null)
+                {
+                    existingBook.WriteOffDate = book.WriteOffDate;
+                }
+                if (book.Author != null)
+                {
+                    existingBook.Author = book.Author;
+                }
+                if (book.InventoryNumber != null)
+                {
+                    existingBook.InventoryNumber = book.InventoryNumber;
+                }
+                if (book.ReleaseYear != null)
+                {
+                    existingBook.ReleaseYear = book.ReleaseYear;
+                }
+
+                _context.SaveChanges();
+            }
+            else
+            {
+                // Обработка ситуации, когда объект не найден
+                Console.WriteLine("Book not found.");
+            }
+        }
     }
 }

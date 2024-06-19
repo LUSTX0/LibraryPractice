@@ -99,5 +99,43 @@ namespace SQLcon.Repositories
             existingUser.Email = email;
             return existingUser;
         }
+        public void UpdateUserObj(int id,User user)
+        {
+            var existingUser = GetUserById(id);
+            if (existingUser != null)
+            {
+                if (user.Name != null)
+                {
+                    existingUser.Name = user.Name;
+                }
+                if (user.MidName != null)
+                {
+                    existingUser.MidName = user.MidName;
+                }
+                if (user.Surname != null)
+                {
+                    existingUser.Surname = user.Surname;
+                }
+                if (user.YearOfBirth != null)
+                {
+                    existingUser.YearOfBirth = user.YearOfBirth;
+                }
+                if (user.Address != null)
+                {
+                    existingUser.Address = user.Address;
+                }
+                if (user.Email != null)
+                {
+                    existingUser.Email = user.Email;
+                }
+
+                _context.SaveChanges();
+            }
+            else
+            {
+                // Обработка ситуации, когда объект не найден
+                Console.WriteLine("User not found.");
+            }
+        }
     }
 }

@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SQLcon.Repositories;
+using System.Net;
+using System.Xml.Linq;
+using System.Text.Json;
 
 namespace Logic.Services
 {
@@ -31,6 +34,39 @@ namespace Logic.Services
         {
            _uRep.DeleteUser(id);
         }
-        
+
+        public void AddUserObj(User user)
+        {
+            if (user != null)
+            {
+                _uRep.AddUser(user);
+            }
+        }
+
+        public void UpdateUserObj(int id, User user)
+        {
+            if (user != null)
+            {
+                _uRep.UpdateUserObj(id, user);
+            }            
+        }
+
+        public void AddUserObj(string user)
+        {            
+            if (user != null)
+            {
+                User userD = JsonSerializer.Deserialize<User>(user);
+                AddUserObj(userD);                         
+            }
+        }
+
+        public void UpdateUserObj(int id, string user)
+        {
+            if (user != null)
+            {
+                User userD = JsonSerializer.Deserialize<User>(user);
+                UpdateUserObj(id,userD);                
+            }            
+        }
     }
 }

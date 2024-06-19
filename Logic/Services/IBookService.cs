@@ -13,5 +13,9 @@ namespace Logic.Services
         void UpdateBook(int id, string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate);
         void DeleteBook(int id);
         void WriteOFFBook(int id, DateOnly date);
+        void AddBookObj(Book book);
+        void UpdateBookObj(int id, Book book);
+        void AddBookObj(string book);
+        void UpdateBookObj(int id, string book);
     }
 }
