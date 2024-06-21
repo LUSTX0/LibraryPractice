@@ -15,9 +15,9 @@ namespace Logic.Services
     {
         
         private readonly IUserRepository _uRep;
-        public UserService()
+        public UserService(IUserRepository uRep)
         {
-            _uRep = new UserRepository();
+            _uRep = uRep;
         }
 
         public void AddUser(string? name, string? midName, string? surname, short? yearOfBirth, string? address, string? email)

@@ -15,9 +15,9 @@ namespace Logic.Services
     {
         
         private readonly IReportRepository _reportRep;
-        public ReportService()
+        public ReportService(IReportRepository reportRep)
         {
-            _reportRep = new ReportRepository();
+            _reportRep = reportRep;
         }
         
         public string GetBooksJson()

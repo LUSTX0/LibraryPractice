@@ -29,9 +29,9 @@ public partial class ApplicationDbContext : DbContext , IApplicationDbContext
 
     public virtual DbSet<UsersView> UsersViews { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=rc1b-b3in3cdba7cdnmev.mdb.yandexcloud.net;database=dbTest;user=user1;password=reunion12", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.35-mysql"));
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+//        => optionsBuilder.UseMySql("server=rc1b-b3in3cdba7cdnmev.mdb.yandexcloud.net;database=dbTest;user=user1;password=reunion12", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.35-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

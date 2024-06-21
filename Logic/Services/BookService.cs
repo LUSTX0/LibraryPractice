@@ -15,9 +15,9 @@ namespace Logic.Services
     {
         //private readonly ApplicationDbContext _context;
         private readonly IBookRepository _bRep;
-        public BookService()
+        public BookService(IBookRepository bRep)
         {
-            _bRep = new BookRepository();
+            _bRep = bRep;
         }
 
         public void AddBook(string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate)

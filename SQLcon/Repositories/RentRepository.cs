@@ -12,9 +12,9 @@ namespace SQLcon.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public RentRepository()
+        public RentRepository(ApplicationDbContext context)
         {
-            _context = new ApplicationDbContext();
+            _context = context;
         }
 
         //public IEnumerable<User> GetAllUsers()

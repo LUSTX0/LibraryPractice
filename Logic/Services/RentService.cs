@@ -13,9 +13,9 @@ namespace Logic.Services
     public class RentService : IRentService
     {       
         private readonly IRentRepository _rentRep;
-        public RentService()
+        public RentService(IRentRepository rentRep)
         {            
-            _rentRep = new RentRepository();
+            _rentRep = rentRep;
         }
 
         public void AddRent(int? userId, int? bookId, DateOnly? rentDate, DateOnly? returnDate)

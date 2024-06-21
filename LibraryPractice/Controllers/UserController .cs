@@ -28,27 +28,27 @@ namespace LIBRARY2.Controllers
 
 
         [HttpPost]
-        public IActionResult Create([FromBody] string newItem)
+        public IActionResult Create([FromBody] string newUser)
         {
-            if (newItem == null)
+            if (newUser == null)
             {
                 return BadRequest();
             }
-            _userService.AddUserObj(newItem);
+            _userService.AddUserObj(newUser);
             //добавить возврат id добавленного пользователя
             
-            return CreatedAtAction(nameof(Get), new { id = "" }, newItem);
+            return CreatedAtAction(nameof(Get), new { id = "" }, newUser);
         }
 
         // PUT api/items/1
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] string updatedItem)
+        public IActionResult Update(int id, [FromBody] string updatedUser)
         {
-            if (updatedItem == null )
+            if (updatedUser == null )
             {
                 return BadRequest();
             }
-            _userService.UpdateUserObj(id, updatedItem);
+            _userService.UpdateUserObj(id, updatedUser);
             //посмотреть правильный код ответа
             return NoContent();
         }

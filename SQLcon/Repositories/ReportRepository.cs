@@ -14,9 +14,9 @@ namespace SQLcon.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public ReportRepository()
+        public ReportRepository(ApplicationDbContext context)
         {
-            _context = new ApplicationDbContext();
+            _context = context;
         }
 
         IEnumerable<BooksView> GetBooksFromT()
