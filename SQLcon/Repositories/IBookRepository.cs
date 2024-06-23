@@ -16,6 +16,7 @@ namespace SQLcon.Repositories
         Book CreateBook(string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate);
         Book GetBookById(int id);
         void UpdateBookObj(int id, Book book);
+        string GetBookJson(int id);
 
     }
 }

@@ -14,5 +14,6 @@ namespace SQLcon.Repositories {
         void DeleteUser(int id);
         User CreateUser(string? name, string? midName, string? surname, short? yearOfBirth, string? address, string? email);
         void UpdateUserObj(int id, User user);
+        string GetUserJson(int id);
     }
 }

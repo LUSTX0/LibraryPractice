@@ -24,7 +24,10 @@ namespace Logic.Services
         {
             _bRep.AddBook(_bRep.CreateBook(title,author,inventoryNumber,year,receiptDate,writeOffDate));
         }
-
+        public string GetBook(int id)
+        {
+            return _bRep.GetBookJson(id);
+        }
         public void UpdateBook(int id, string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate)
         {
             _bRep.UpdateBook(id,  title,  author,  inventoryNumber,  year,  receiptDate,  writeOffDate);

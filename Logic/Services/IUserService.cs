@@ -16,5 +16,6 @@ namespace Logic.Services
         void UpdateUserObj(int id, User user);
         void AddUserObj(string user);
         void UpdateUserObj(int id, string user);
+        string GetUser(int id);
     }
 }

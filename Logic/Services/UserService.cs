@@ -34,7 +34,10 @@ namespace Logic.Services
         {
            _uRep.DeleteUser(id);
         }
-
+        public string GetUser(int id)
+        {
+            return _uRep.GetUserJson(id);
+        }
         public void AddUserObj(User user)
         {
             if (user != null)

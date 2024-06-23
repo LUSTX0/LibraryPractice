@@ -30,7 +30,10 @@ namespace Logic.Services
                 _rentRep.AddRent(rent);
             }
         }
-
+        public string GetRental(int id)
+        {
+            return _rentRep.GetRentJson(id);
+        }
         public void AddRentObj(string rent)
         {
             if (rent != null)

@@ -13,6 +13,7 @@ namespace SQLcon.Repositories
         void AddRent(BooksRent rent);
         void CloseRent(BooksRent rent, DateOnly? endDate);
         BooksRent CreateRent(int? userId, int? bookId, DateOnly? rentDate, DateOnly? returnDate);
+        string GetRentJson(int id);
 
     }
 }

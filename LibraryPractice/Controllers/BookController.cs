@@ -24,6 +24,11 @@ namespace LIBRARY2.Controllers
             return Ok( _reportService.GetBooksJson());
         }
 
+        [HttpGet("book/{id}", Name = "GetBook")]
+        public IActionResult GetBook(int id)
+        {
+            return Ok(_bookService.GetBook(id));
+        }
         [HttpPost]
         public IActionResult Create([FromBody] Book newBook)
         {

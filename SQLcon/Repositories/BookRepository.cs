@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLcon;
 using SQLcon.Models;
+using Newtonsoft.Json;
 namespace SQLcon.Repositories
 {
     public class BookRepository : IBookRepository
@@ -21,7 +22,10 @@ namespace SQLcon.Repositories
         {
             return _context.Books.ToList();
         }
-
+        public string GetBookJson(int id)
+        {
+            return JsonConvert.SerializeObject(GetBookById(id), Formatting.Indented);
+        }
         public Book GetBookById(int id)
         {
             if (_context.Books.Find(id) == null)

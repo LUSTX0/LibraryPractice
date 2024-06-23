@@ -1,4 +1,5 @@
-﻿using SQLcon.Models;
+﻿using Newtonsoft.Json;
+using SQLcon.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,11 @@ namespace SQLcon.Repositories
             {
                 return _context.Users.Find(id);
             }
+        }
+
+        public string GetUserJson(int id)
+        {
+            return JsonConvert.SerializeObject(GetUserById(id), Formatting.Indented);            
         }
 
         public void AddUser(User user)

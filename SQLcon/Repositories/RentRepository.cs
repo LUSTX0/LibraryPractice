@@ -1,4 +1,5 @@
-﻿using SQLcon.Models;
+﻿using Newtonsoft.Json;
+using SQLcon.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,10 @@ namespace SQLcon.Repositories
         //{
         //    return _context.Users.ToList();
         //}
-
+        public string GetRentJson(int id)
+        {
+            return JsonConvert.SerializeObject(GetRentById(id), Formatting.Indented);
+        }
         public BooksRent GetRentById(int id)
         {
             if (_context.BooksRents.Find(id) == null)

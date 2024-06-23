@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Logic.Services;
-
+using SQLcon.Models;
 
 namespace LIBRARY2.Controllers
 {
@@ -23,12 +23,16 @@ namespace LIBRARY2.Controllers
         {
             return Ok( _reportService.GetUsersJson());
         }
-
-        
+        //переделать в возврат json объекта
+        [HttpGet("{id}", Name = "GetUser")]
+        public IActionResult Get(int id)
+        {
+            return Ok(_userService.GetUser(id));
+        }
 
 
         [HttpPost]
-        public IActionResult Create([FromBody] string newUser)
+        public IActionResult Create([FromBody] User newUser)
         {
             if (newUser == null)
             {
@@ -42,7 +46,7 @@ namespace LIBRARY2.Controllers
 
         // PUT api/items/1
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] string updatedUser)
+        public IActionResult Update(int id, [FromBody] User updatedUser)
         {
             if (updatedUser == null )
             {

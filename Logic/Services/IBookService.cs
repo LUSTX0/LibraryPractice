@@ -17,5 +17,6 @@ namespace Logic.Services
         void UpdateBookObj(int id, Book book);
         void AddBookObj(string book);
         void UpdateBookObj(int id, string book);
+        string GetBook(int id);
     }
 }

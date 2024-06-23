@@ -7,20 +7,21 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySqlConnector;
 using System.Data.Entity;
+using LIBRARY2;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString =  builder.Configuration.GetConnectionString("DefaultConnection");
 //builder.Services.AddMySql<ApplicationDbContext>("DefaultConnection",);
-//var connectionString = builder.Configuration.GetConnectionString("mysqldb");
 
 builder.Services.AddDbContextPool<ApplicationDbContext>(
     dbContextOptionsBuilder => dbContextOptionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 23))));
-//builder.enr<ApplicationDbContext>();
+
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //        options.UseMySql(Microsoft.Extensions.Configuration.c("DefaultConnection")));
 
+// dependecies
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRentRepository, RentRepository>();
@@ -33,8 +34,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// dependecies
-//builder.Services.AddSingleton<>();
+
+// Логи
+builder.Services.AddLogging();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,9 +46,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>(); //added 2
+// Другие middleware
+app.UseRouting();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+//app.UseEndpoints(endpoints =>                  //added 4
+//{
+//    endpoints.MapControllers();
+//});
 
 app.MapControllers();
 

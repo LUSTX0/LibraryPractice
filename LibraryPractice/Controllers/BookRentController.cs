@@ -29,7 +29,11 @@ namespace LIBRARY2.Controllers
         {
             return Ok(_reportService.GetRentalsByUserJson(id));
         }
-
+        [HttpGet("rental/{id}", Name = "GetRental")]
+        public IActionResult GetRental(int id)
+        {
+            return Ok(_rentService.GetRental(id));
+        }
         [HttpPost]
         public IActionResult Create([FromBody] BooksRent newBookRent)
         {

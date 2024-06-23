@@ -13,5 +13,6 @@ namespace Logic.Services
         void CloseRent(int id, DateOnly? endDate);
         void AddRentObj(BooksRent rent);
         void AddRentObj(string rent);
+        string GetRental(int id);
     }
 }
