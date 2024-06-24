@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Logic.Services;
 using SQLcon.Models;
+using System.Net;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LIBRARY2.Controllers
 {
@@ -17,17 +19,30 @@ namespace LIBRARY2.Controllers
         }
 
 
-
         [HttpGet(Name = "GetBooks")]
         public IActionResult Get()
-        {
-            return Ok( _reportService.GetBooksJson());
+        {           
+            try
+            {
+                return Ok(_reportService.GetBooksJson());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
+            }
         }
 
         [HttpGet("book/{id}", Name = "GetBook")]
-        public IActionResult GetBook(int id)
-        {
-            return Ok(_bookService.GetBook(id));
+        public IActionResult Get(int id)
+        {            
+            try
+            {
+                return Ok(_bookService.GetBook(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
+            }
         }
         [HttpPost]
         public IActionResult Create([FromBody] Book newBook)
@@ -36,13 +51,21 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
-            _bookService.AddBookObj(newBook);
-            //добавить возврат id добавленного пользователя VT
+            
+            try
+            {
+                _bookService.AddBookObj(newBook);
+                //добавить возврат id добавленного пользователя VT
 
-            return CreatedAtAction(nameof(Get), new { id = "" }, newBook);
+                return CreatedAtAction(nameof(Get), new { id = newBook.IdBooks }, newBook);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
+            }
         }
 
-        // PUT api/items/1
+        // PUT редактировать описание книги
         [HttpPut("update/{id}")]
         public IActionResult Update(int id, [FromBody] Book updatedBook)
         {
@@ -50,12 +73,20 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
-            _bookService.UpdateBookObj(id, updatedBook);
-            //посмотреть правильный код ответа
-            return NoContent();
+            
+            try
+            {
+                _bookService.UpdateBookObj(id, updatedBook);
+                //посмотреть правильный код ответа
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
+            }
         }
 
-        // PUT api/items/1
+        // PUT списать книгу
         [HttpPut("writeoff/{id}")]
         public IActionResult Update(int id, [FromBody] DateOnly? date)
         {
@@ -63,18 +94,33 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
-            _bookService.WriteOFFBook(id, (DateOnly)date);
-            //посмотреть правильный код ответа
-            return NoContent();
+            
+            try
+            {
+                _bookService.WriteOFFBook(id, (DateOnly)date);
+                //посмотреть правильный код ответа
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
+            }
         }
 
         // DELETE api/items/1
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-        {
-            _bookService.DeleteBook(id);
+        {            
+            try
+            {
+                _bookService.DeleteBook(id);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
+            }
         }
     }
 }

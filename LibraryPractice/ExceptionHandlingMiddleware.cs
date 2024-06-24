@@ -36,7 +36,8 @@ namespace LIBRARY2
             {
                 StatusCode = context.Response.StatusCode,
                 Message = "Internal Server Error from the custom middleware.",
-                Detailed = exception.Message
+                Detailed = exception.Message,
+                InnerException = exception.InnerException?.Message
             };
 
             return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
