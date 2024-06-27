@@ -8,41 +8,42 @@ using SQLcon.Repositories;
 using System.Net;
 using System.Xml.Linq;
 using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Logic.Services
 {
     public class UserService : IUserService
-    {
+    {        
         
-        private readonly IUserRepository _uRep;
-        public UserService(IUserRepository uRep)
-        {
-            _uRep = uRep;
+        private readonly IRepository<User> _uRepTest;
+        public UserService( IRepository<User> uRepTest)
+        {            
+            _uRepTest = uRepTest;
         }
 
-        public void AddUser(string? name, string? midName, string? surname, short? yearOfBirth, string? address, string? email)
-        {
-            _uRep.AddUser(_uRep.CreateUser(name,midName,surname,yearOfBirth,address,email));
-        }
+        //public void AddUser(string? name, string? midName, string? surname, short? yearOfBirth, string? address, string? email)
+        //{
+        //    _uRep.AddUser(_uRep.CreateUser(name,midName,surname,yearOfBirth,address,email));
+        //}
 
-        public void UpdateUser(int id, string? name, string? midName, string? surname, short? yearOfBirth, string? address, string? email)
-        {
-            _uRep.UpdateUser(id,name,midName,surname, yearOfBirth,address,email);
-        }
+        //public void UpdateUser(int id, string? name, string? midName, string? surname, short? yearOfBirth, string? address, string? email)
+        //{
+        //    _uRep.UpdateUser(id,name,midName,surname, yearOfBirth,address,email);
+        //}
 
         public void DeleteUser(int id)
         {
-           _uRep.DeleteUser(id);
+            _uRepTest.Delete(id);
         }
         public string GetUser(int id)
         {
-            return _uRep.GetUserJson(id);
+            return JsonConvert.SerializeObject(_uRepTest.GetById(id), Formatting.Indented);            
         }
         public void AddUserObj(User user)
         {
             if (user != null)
             {
-                _uRep.AddUser(user);
+                _uRepTest.Insert(user);
             }
         }
 
@@ -50,26 +51,9 @@ namespace Logic.Services
         {
             if (user != null)
             {
-                _uRep.UpdateUserObj(id, user);
+                _uRepTest.Update(user,id);
             }            
         }
 
-        public void AddUserObj(string user)
-        {            
-            if (user != null)
-            {
-                User userD = JsonSerializer.Deserialize<User>(user);
-                AddUserObj(userD);                         
-            }
-        }
-
-        public void UpdateUserObj(int id, string user)
-        {
-            if (user != null)
-            {
-                User userD = JsonSerializer.Deserialize<User>(user);
-                UpdateUserObj(id,userD);                
-            }            
-        }
     }
 }

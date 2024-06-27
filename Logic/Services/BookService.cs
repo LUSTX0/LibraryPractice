@@ -8,47 +8,53 @@ using SQLcon;
 using SQLcon.Models;
 using SQLcon.Repositories;
 using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Logic.Services
 {
     public class BookService : IBookService
     {
-        //private readonly ApplicationDbContext _context;
-        private readonly IBookRepository _bRep;
-        public BookService(IBookRepository bRep)
-        {
-            _bRep = bRep;
+       
+        private readonly IRepository<Book> _bRepTest;
+        public BookService( IRepository<Book> bRepTest)
+        {            
+            _bRepTest = bRepTest;
         }
-
-        public void AddBook(string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate)
-        {
-            _bRep.AddBook(_bRep.CreateBook(title,author,inventoryNumber,year,receiptDate,writeOffDate));
-        }
-        public string GetBook(int id)
-        {
-            return _bRep.GetBookJson(id);
-        }
-        public void UpdateBook(int id, string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate)
-        {
-            _bRep.UpdateBook(id,  title,  author,  inventoryNumber,  year,  receiptDate,  writeOffDate);
+        
+        
+        //public void AddBook(string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate)
+        //{
+        //    _bRep.AddBook(_bRep.CreateBook(title,author,inventoryNumber,year,receiptDate,writeOffDate));
+        //}
+        
+        //public void UpdateBook(int id, string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate)
+        //{
+        //    _bRep.UpdateBook(id,  title,  author,  inventoryNumber,  year,  receiptDate,  writeOffDate);
             
+        //}
+
+        public string GetBook(int id)
+        {            
+            return JsonConvert.SerializeObject(_bRepTest.GetById(id), Formatting.Indented);
         }
 
         public void DeleteBook(int id)
         {
-            _bRep.DeleteBook(id);
+            _bRepTest.Delete(id);
         }
 
         public void WriteOFFBook(int id, DateOnly date)
         {
-           _bRep.WriteOFFBook(id, date);
+            Book currentBook = _bRepTest.GetById(id);
+            currentBook.WriteOffDate = date;
+            UpdateBookObj(id, currentBook);           
         }
 
         public void AddBookObj(Book book)
         {
             if (book != null)
             {
-                _bRep.AddBook(book);
+                _bRepTest.Insert(book);
             }
         }
 
@@ -56,25 +62,9 @@ namespace Logic.Services
         {
             if (book != null)
             {
-                _bRep.UpdateBookObj(id, book);
+                _bRepTest.Update( book, id);
             }
         }
-        public void AddBookObj(string book)
-        {
-            if (book != null)
-            {
-                Book bookD = JsonSerializer.Deserialize<Book>(book);
-                AddBookObj(bookD);
-            }            
-        }
-
-        public void UpdateBookObj(int id, string book)
-        {
-            if (book != null)
-            {
-                Book bookD = JsonSerializer.Deserialize<Book>(book);
-                UpdateBookObj(id,bookD);
-            }
-        }
+        
     }
 }

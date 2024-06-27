@@ -9,14 +9,12 @@ namespace Logic.Services
 {
     public interface IBookService
     {
-        void AddBook(string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate);
-        void UpdateBook(int id, string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate);
+        //void AddBook(string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate);
+        //void UpdateBook(int id, string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate);
         void DeleteBook(int id);
         void WriteOFFBook(int id, DateOnly date);
         void AddBookObj(Book book);
-        void UpdateBookObj(int id, Book book);
-        void AddBookObj(string book);
-        void UpdateBookObj(int id, string book);
+        void UpdateBookObj(int id, Book book);      
         string GetBook(int id);
     }
 }

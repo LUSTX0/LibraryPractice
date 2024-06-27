@@ -20,28 +20,15 @@ namespace LIBRARY2.Controllers
         // отчет по пользователям
         [HttpGet(Name = "GetUsers")]
         public IActionResult Get()
-        {            
-            try
-            {
-                return Ok(_reportService.GetUsersJson());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+        {
+            return Ok(_reportService.GetUsersJson());            
         }
+
         // вернуть запись о пользователе по ID
         [HttpGet("{id}", Name = "GetUser")]
         public IActionResult Get(int id)
-        {            
-            try
-            {
-                return Ok(_userService.GetUser(id));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+        {
+            return Ok(_userService.GetUser(id));            
         }
 
         // создать пользователя
@@ -52,18 +39,11 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
-            
-            try
-            {
-                _userService.AddUserObj(newUser);
-                //добавить возврат id добавленного пользователя
 
-                return CreatedAtAction(nameof(Get), new { id = newUser.IdUsers }, newUser);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+            _userService.AddUserObj(newUser);
+            //добавить возврат id добавленного пользователя
+            return CreatedAtAction(nameof(Get), new { id = newUser.IdUsers }, newUser);
+            
         }
 
         // PUT изменить информацию пользователя
@@ -74,32 +54,20 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
+
+            _userService.UpdateUserObj(id, updatedUser);
+            //посмотреть правильный код ответа
+            return NoContent();
             
-            try
-            {
-                _userService.UpdateUserObj(id, updatedUser);
-                //посмотреть правильный код ответа
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
         }
 
         // DELETE удалить пользователя
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-        {           
-            try
-            {
-                _userService.DeleteUser(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+        {
+            _userService.DeleteUser(id);
+            return NoContent();
+            
         }
     }
 }

@@ -21,28 +21,16 @@ namespace LIBRARY2.Controllers
 
         [HttpGet(Name = "GetBooks")]
         public IActionResult Get()
-        {           
-            try
-            {
-                return Ok(_reportService.GetBooksJson());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+        {
+            return Ok(_reportService.GetBooksJson());
+            
         }
 
         [HttpGet("book/{id}", Name = "GetBook")]
         public IActionResult Get(int id)
-        {            
-            try
-            {
-                return Ok(_bookService.GetBook(id));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+        {
+            return Ok(_bookService.GetBook(id));
+            
         }
         [HttpPost]
         public IActionResult Create([FromBody] Book newBook)
@@ -51,18 +39,11 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
-            
-            try
-            {
-                _bookService.AddBookObj(newBook);
-                //добавить возврат id добавленного пользователя VT
+            _bookService.AddBookObj(newBook);
+            //добавить возврат id добавленного пользователя VT
 
-                return CreatedAtAction(nameof(Get), new { id = newBook.IdBooks }, newBook);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+            return CreatedAtAction(nameof(Get), new { id = newBook.IdBooks }, newBook);
+            
         }
 
         // PUT редактировать описание книги
@@ -73,17 +54,10 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
+            _bookService.UpdateBookObj(id, updatedBook);
+            //посмотреть правильный код ответа
+            return NoContent();
             
-            try
-            {
-                _bookService.UpdateBookObj(id, updatedBook);
-                //посмотреть правильный код ответа
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
         }
 
         // PUT списать книгу
@@ -94,33 +68,21 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
+            _bookService.WriteOFFBook(id, (DateOnly)date);
+            //посмотреть правильный код ответа
+            return NoContent();
             
-            try
-            {
-                _bookService.WriteOFFBook(id, (DateOnly)date);
-                //посмотреть правильный код ответа
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
         }
 
         // DELETE api/items/1
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-        {            
-            try
-            {
-                _bookService.DeleteBook(id);
+        {
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+            _bookService.DeleteBook(id);
+
+            return NoContent();
+            
         }
     }
 }

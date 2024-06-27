@@ -20,43 +20,22 @@ namespace LIBRARY2.Controllers
         //общий отчет
         [HttpGet(Name = "GetRentals")]
         public IActionResult Get()
-        {            
-            try
-            {
-                return Ok(_reportService.GetRentalsJson());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+        {
+            return Ok(_reportService.GetRentalsJson());
         }
 
         //отчет по пользователям
         [HttpGet("{id}", Name = "GetUsersRent")]
         public IActionResult Get(int id)
-        {           
-            try
-            {
-                return Ok(_reportService.GetRentalsByUserJson(id));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+        {
+            return Ok(_reportService.GetRentalsByUserJson(id));
         }
 
         // вернуть запись об аренде по ID
         [HttpGet("rental/{id}", Name = "GetRental")]
         public IActionResult GetRental(int id)
-        {            
-            try
-            {
-                return Ok(_rentService.GetRental(id));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+        {
+            return Ok(_rentService.GetRental(id));
         }
 
         // взятие в аренду
@@ -67,18 +46,10 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
-            
-            try
-            {
-                _rentService.AddRentObj(newBookRent);
-                //добавить возврат id добавленного пользователя VT
+            _rentService.AddRentObj(newBookRent);
+            //добавить возврат id добавленного пользователя VT
 
-                return CreatedAtAction(nameof(GetRental), new { id = newBookRent.IdBooksRent }, newBookRent);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
+            return CreatedAtAction(nameof(GetRental), new { id = newBookRent.IdBooksRent }, newBookRent);
         }
 
         // PUT возврат книги
@@ -89,17 +60,10 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
+            _rentService.CloseRent(id, refundDate);
+            //посмотреть правильный код ответа
+            return NoContent();
             
-            try
-            {
-                _rentService.CloseRent(id, refundDate);
-                //посмотреть правильный код ответа
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = ex.Message, details = ex.InnerException?.Message });
-            }
         }
     }
 }

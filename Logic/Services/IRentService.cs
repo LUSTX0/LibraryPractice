@@ -9,10 +9,9 @@ namespace Logic.Services
 {
     public interface IRentService
     {
-        void AddRent(int? userId, int? bookId, DateOnly? rentDate, DateOnly? returnDate);
+       // void AddRent(int? userId, int? bookId, DateOnly? rentDate, DateOnly? returnDate);
         void CloseRent(int id, DateOnly? endDate);
-        void AddRentObj(BooksRent rent);
-        void AddRentObj(string rent);
+        void AddRentObj(BooksRent rent);       
         string GetRental(int id);
     }
 }

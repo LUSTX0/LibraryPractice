@@ -7,44 +7,40 @@ using System.Threading.Tasks;
 using SQLcon.Repositories;
 using System.Net;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Newtonsoft.Json;
 
 namespace Logic.Services
 {
     public class RentService : IRentService
-    {       
-        private readonly IRentRepository _rentRep;
-        public RentService(IRentRepository rentRep)
-        {            
-            _rentRep = rentRep;
-        }
-
-        public void AddRent(int? userId, int? bookId, DateOnly? rentDate, DateOnly? returnDate)
+    {
+        private readonly IRepository<BooksRent> _rentRepTest;
+        public RentService(IRepository<BooksRent> rentRepTest)
         {
-            _rentRep.AddRent(_rentRep.CreateRent( userId,  bookId,  rentDate,  returnDate));           
-        }
+            _rentRepTest = rentRepTest;
+        }        
+        
+        //public void AddRent(int? userId, int? bookId, DateOnly? rentDate, DateOnly? returnDate)
+        //{
+        //    _rentRep.AddRent(_rentRep.CreateRent( userId,  bookId,  rentDate,  returnDate));           
+        //}
 
         public void AddRentObj(BooksRent rent)
         {
             if (rent != null) 
-            { 
-                _rentRep.AddRent(rent);
+            {
+                _rentRepTest.Insert(rent);
             }
         }
         public string GetRental(int id)
         {
-            return _rentRep.GetRentJson(id);
-        }
-        public void AddRentObj(string rent)
-        {
-            if (rent != null)
-            {
-                BooksRent rentD = JsonSerializer.Deserialize<BooksRent>(rent);
-                AddRentObj(rentD);                
-            }
+            return JsonConvert.SerializeObject(_rentRepTest.GetById(id), Formatting.Indented);            
         }
         public void CloseRent(int id, DateOnly? endDate)
         {
-           _rentRep.CloseRent(_rentRep.GetRentById(id),endDate);
+            BooksRent currentRent = _rentRepTest.GetById(id);
+            currentRent.ReturnDate = endDate;
+            _rentRepTest.Update(currentRent, id);            
         }        
     }
 }
