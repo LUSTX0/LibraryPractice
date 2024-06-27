@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Logic.Services;
 using SQLcon.Models;
 using System.Net;
+using System.Globalization;
 
 namespace LIBRARY2.Controllers
 {
@@ -54,12 +55,17 @@ namespace LIBRARY2.Controllers
 
         // PUT возврат книги
         [HttpPut("closerent/{id}")]
-        public IActionResult Update(int id, [FromBody] DateOnly? refundDate)
+        public IActionResult Update(int id, [FromBody] string Date)
         {
-            if (refundDate == null)
+            if (Date == null)
             {
                 return BadRequest();
             }
+            if(!DateOnly.TryParseExact(Date, "yyyy-MM-dd",null,DateTimeStyles.None,out DateOnly refundDate))
+            {
+                return BadRequest("Invalid date format");
+            }
+
             _rentService.CloseRent(id, refundDate);
             //посмотреть правильный код ответа
             return NoContent();

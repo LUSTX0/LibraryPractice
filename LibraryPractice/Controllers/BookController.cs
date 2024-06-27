@@ -3,6 +3,7 @@ using Logic.Services;
 using SQLcon.Models;
 using System.Net;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Globalization;
 
 namespace LIBRARY2.Controllers
 {
@@ -62,13 +63,17 @@ namespace LIBRARY2.Controllers
 
         // PUT списать книгу
         [HttpPut("writeoff/{id}")]
-        public IActionResult Update(int id, [FromBody] DateOnly? date)
+        public IActionResult Update(int id, [FromBody] string Date)
         {
-            if (date == null)
+            if (Date == null)
             {
                 return BadRequest();
             }
-            _bookService.WriteOFFBook(id, (DateOnly)date);
+            if (!DateOnly.TryParseExact(Date, "yyyy-MM-dd", null, DateTimeStyles.None, out DateOnly date))
+            {
+                return BadRequest("Invalid date format");
+            }
+            _bookService.WriteOFFBook(id, date);
             //посмотреть правильный код ответа
             return NoContent();
             
