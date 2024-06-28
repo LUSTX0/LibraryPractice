@@ -21,14 +21,30 @@ namespace LIBRARY2.Controllers
         [HttpGet(Name = "GetUsers")]
         public IActionResult Get()
         {
-            return Ok(_reportService.GetUsersJson());            
+            string result = _reportService.GetUsersJson();
+            if (result != "null")
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }        
         }
 
         // вернуть запись о пользователе по ID
         [HttpGet("{id}", Name = "GetUser")]
         public IActionResult Get(int id)
         {
-            return Ok(_userService.GetUser(id));            
+            string result = _userService.GetUser(id);
+            if (result != "null")
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }      
         }
 
         // создать пользователя
@@ -41,9 +57,7 @@ namespace LIBRARY2.Controllers
             }
 
             _userService.AddUserObj(newUser);
-            //добавить возврат id добавленного пользователя
-            return CreatedAtAction(nameof(Get), new { id = newUser.IdUsers }, newUser);
-            
+            return CreatedAtAction(nameof(Get), new { id = newUser.IdUsers }, newUser);            
         }
 
         // PUT изменить информацию пользователя
@@ -54,20 +68,24 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
+            if (!_userService.UpdateUserObj(id, updatedUser))
+            {
+                return NotFound();
+            }
 
-            _userService.UpdateUserObj(id, updatedUser);
-            //посмотреть правильный код ответа
-            return NoContent();
-            
+            return Ok(_userService.GetUser(id));            
         }
 
         // DELETE удалить пользователя
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _userService.DeleteUser(id);
-            return NoContent();
-            
+            if (!_userService.DeleteUser(id))
+            {
+                return NotFound();
+            }
+
+            return NoContent();            
         }
     }
 }

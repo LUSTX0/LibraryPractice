@@ -30,7 +30,15 @@ namespace SQLcon.Repositories
 
         public virtual T GetById(int id)
         {
-            return _dbSet.Find(id);
+            T? result = _dbSet.Find(id);
+            if (result != null)
+            {
+                return result;
+            }
+            else
+            {
+                return null;
+            }           
         }
 
         public virtual void Insert(T entity)

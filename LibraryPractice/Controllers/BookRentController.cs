@@ -22,21 +22,45 @@ namespace LIBRARY2.Controllers
         [HttpGet(Name = "GetRentals")]
         public IActionResult Get()
         {
-            return Ok(_reportService.GetRentalsJson());
+            string result = _reportService.GetRentalsJson();
+            if (result != "null")
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         //отчет по пользователям
-        [HttpGet("{id}", Name = "GetUsersRent")]
+        [HttpGet("{id}/books", Name = "GetUsersRent")]
         public IActionResult Get(int id)
         {
-            return Ok(_reportService.GetRentalsByUserJson(id));
+            string result = _reportService.GetRentalsByUserJson(id);
+            if (result != "null")
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         // вернуть запись об аренде по ID
-        [HttpGet("rental/{id}", Name = "GetRental")]
+        [HttpGet("{id}", Name = "GetRental")]
         public IActionResult GetRental(int id)
         {
-            return Ok(_rentService.GetRental(id));
+            string result = _rentService.GetRental(id);
+            if (result != "null")
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         // взятие в аренду
@@ -48,13 +72,12 @@ namespace LIBRARY2.Controllers
                 return BadRequest();
             }
             _rentService.AddRentObj(newBookRent);
-            //добавить возврат id добавленного пользователя VT
 
             return CreatedAtAction(nameof(GetRental), new { id = newBookRent.IdBooksRent }, newBookRent);
         }
 
         // PUT возврат книги
-        [HttpPut("closerent/{id}")]
+        [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] string Date)
         {
             if (Date == null)
@@ -65,11 +88,12 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest("Invalid date format");
             }
+            if (!_rentService.CloseRent(id, refundDate))
+            {
+                return NotFound();
+            }
 
-            _rentService.CloseRent(id, refundDate);
-            //посмотреть правильный код ответа
-            return NoContent();
-            
+            return Ok(_rentService.GetRental(id));            
         }
     }
 }

@@ -11,10 +11,10 @@ namespace Logic.Services
     {
         //void AddBook(string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate);
         //void UpdateBook(int id, string? title, string? author, string? inventoryNumber, short? year, DateOnly? receiptDate, DateOnly? writeOffDate);
-        void DeleteBook(int id);
-        void WriteOFFBook(int id, DateOnly date);
+        bool DeleteBook(int id);
+        bool WriteOFFBook(int id, DateOnly date);
         void AddBookObj(Book book);
-        void UpdateBookObj(int id, Book book);      
+        bool UpdateBookObj(int id, Book book);      
         string GetBook(int id);
     }
 }

@@ -27,20 +27,25 @@ namespace Logic.Services
 
         public void AddRentObj(BooksRent rent)
         {
-            if (rent != null) 
-            {
-                _rentRepTest.Insert(rent);
-            }
+            _rentRepTest.Insert(rent);
         }
+
         public string GetRental(int id)
         {
             return JsonConvert.SerializeObject(_rentRepTest.GetById(id), Formatting.Indented);            
         }
-        public void CloseRent(int id, DateOnly? endDate)
+
+        public bool CloseRent(int id, DateOnly? endDate)
         {
             BooksRent currentRent = _rentRepTest.GetById(id);
+            if (currentRent == null) 
+            {
+                return false;
+            }
+            
             currentRent.ReturnDate = endDate;
-            _rentRepTest.Update(currentRent, id);            
+            _rentRepTest.Update(currentRent, id);
+            return true;
         }        
     }
 }

@@ -41,7 +41,14 @@ namespace Logic.Services
         public string GetRentalsByUserJson(int userdID)
         { 
             User currentUser = _uRepTest.GetById(userdID);
-            return JsonConvert.SerializeObject(_rvReportTest.GetAll(a => a.Surname == currentUser.Surname && a.MidName == currentUser.MidName && a.Name == currentUser.Name), Formatting.Indented);
+            if (currentUser != null)
+            {
+                return JsonConvert.SerializeObject(_rvReportTest.GetAll(a => a.Surname == currentUser.Surname && a.MidName == currentUser.MidName && a.Name == currentUser.Name), Formatting.Indented);
+            }
+            else
+            {
+                return "null";
+            }
         }
     }
 }

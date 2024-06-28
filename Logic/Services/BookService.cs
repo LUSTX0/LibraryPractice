@@ -38,32 +38,45 @@ namespace Logic.Services
             return JsonConvert.SerializeObject(_bRepTest.GetById(id), Formatting.Indented);
         }
 
-        public void DeleteBook(int id)
-        {
-            _bRepTest.Delete(id);
-        }
-
-        public void WriteOFFBook(int id, DateOnly date)
+        public bool DeleteBook(int id)
         {
             Book currentBook = _bRepTest.GetById(id);
+            if (currentBook == null)
+            {
+                return false;
+            }
+
+            _bRepTest.Delete(id);
+            return true;
+        }
+
+        public bool WriteOFFBook(int id, DateOnly date)
+        {
+            Book currentBook = _bRepTest.GetById(id);
+            if (currentBook == null)
+            {
+                return false;
+            }
             currentBook.WriteOffDate = date;
-            UpdateBookObj(id, currentBook);           
+            UpdateBookObj(id, currentBook); 
+            return true;
         }
 
         public void AddBookObj(Book book)
         {
-            if (book != null)
-            {
-                _bRepTest.Insert(book);
-            }
+            _bRepTest.Insert(book);            
         }
 
-        public void UpdateBookObj(int id, Book book)
+        public bool UpdateBookObj(int id, Book book)
         {
-            if (book != null)
+            Book currentBook = _bRepTest.GetById(id);
+            if (currentBook == null)
             {
-                _bRepTest.Update( book, id);
+                return false;
             }
+
+            _bRepTest.Update(book, id);
+            return true;
         }
         
     }

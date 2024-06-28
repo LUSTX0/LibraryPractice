@@ -11,9 +11,9 @@ namespace Logic.Services
     {
         //void AddUser(string? name, string? midName, string? surname, short? yearOfBirth, string? address, string? email);
         //void UpdateUser(int id, string? name, string? midName, string? surname, short? yearOfBirth, string? address, string? email);
-        void DeleteUser(int id);
+        bool DeleteUser(int id);
         void AddUserObj(User user);
-        void UpdateUserObj(int id, User user);
+        bool UpdateUserObj(int id, User user);
         string GetUser(int id);
     }
 }

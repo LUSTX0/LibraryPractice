@@ -23,16 +23,32 @@ namespace LIBRARY2.Controllers
         [HttpGet(Name = "GetBooks")]
         public IActionResult Get()
         {
-            return Ok(_reportService.GetBooksJson());
+            string result = _reportService.GetBooksJson();
+            if (result != "null")
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }
             
         }
 
-        [HttpGet("book/{id}", Name = "GetBook")]
+        [HttpGet("{id}", Name = "GetBook")]
         public IActionResult Get(int id)
         {
-            return Ok(_bookService.GetBook(id));
-            
+            string result = _bookService.GetBook(id);
+            if (result!= "null")
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }                   
         }
+
         [HttpPost]
         public IActionResult Create([FromBody] Book newBook)
         {
@@ -40,29 +56,29 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest();
             }
-            _bookService.AddBookObj(newBook);
-            //добавить возврат id добавленного пользователя VT
+            _bookService.AddBookObj(newBook);            
 
-            return CreatedAtAction(nameof(Get), new { id = newBook.IdBooks }, newBook);
-            
+            return CreatedAtAction(nameof(Get), new { id = newBook.IdBooks }, newBook);            
         }
 
         // PUT редактировать описание книги
-        [HttpPut("update/{id}")]
+        [HttpPut("updating/{id}")]
         public IActionResult Update(int id, [FromBody] Book updatedBook)
         {
             if (updatedBook == null)
             {
                 return BadRequest();
             }
-            _bookService.UpdateBookObj(id, updatedBook);
-            //посмотреть правильный код ответа
-            return NoContent();
-            
+            if(! _bookService.UpdateBookObj(id, updatedBook))
+            {
+                return NotFound();
+            }
+                        
+            return Ok(_bookService.GetBook(id));            
         }
 
         // PUT списать книгу
-        [HttpPut("writeoff/{id}")]
+        [HttpPut("write-off/{id}")]
         public IActionResult Update(int id, [FromBody] string Date)
         {
             if (Date == null)
@@ -73,21 +89,24 @@ namespace LIBRARY2.Controllers
             {
                 return BadRequest("Invalid date format");
             }
-            _bookService.WriteOFFBook(id, date);
-            //посмотреть правильный код ответа
-            return NoContent();
+            if(!_bookService.WriteOFFBook(id, date))
+            {
+                return NotFound();
+            }
             
+            return Ok(_bookService.GetBook(id));            
         }
 
         // DELETE api/items/1
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            if (!_bookService.DeleteBook(id))
+            {
+                return NotFound();
+            }           
 
-            _bookService.DeleteBook(id);
-
-            return NoContent();
-            
+            return NoContent();            
         }
     }
 }

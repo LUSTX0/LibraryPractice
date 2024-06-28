@@ -31,29 +31,37 @@ namespace Logic.Services
         //    _uRep.UpdateUser(id,name,midName,surname, yearOfBirth,address,email);
         //}
 
-        public void DeleteUser(int id)
+        public bool DeleteUser(int id)
         {
+            User currentUser = _uRepTest.GetById(id);
+            if (currentUser == null)
+            {
+                return false;
+            }
+
             _uRepTest.Delete(id);
+            return true;
         }
         public string GetUser(int id)
         {
             return JsonConvert.SerializeObject(_uRepTest.GetById(id), Formatting.Indented);            
         }
+
         public void AddUserObj(User user)
         {
-            if (user != null)
-            {
-                _uRepTest.Insert(user);
-            }
+            _uRepTest.Insert(user);
         }
 
-        public void UpdateUserObj(int id, User user)
+        public bool UpdateUserObj(int id, User user)
         {
-            if (user != null)
+            User currentUser = _uRepTest.GetById(id);
+            if (currentUser == null)
             {
-                _uRepTest.Update(user,id);
-            }            
-        }
+                return false;
+            }
 
+            _uRepTest.Update(user, id);
+            return true;     
+        }
     }
 }
