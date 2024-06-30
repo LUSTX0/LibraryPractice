@@ -7,16 +7,26 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+# Checkout the repository with full history
+# RUN git clone --depth=full <https://github.com/LUSTX0/LibraryPractice.git> .
+
+# Install Nerdbank.GitVersioning
+# RUN dotnet add <project>.csproj package Nerdbank.GitVersioning
+
 # Copy the solution file and restore dependencies
 COPY *.sln ./
 COPY LibraryPractice/LIBRARY2.csproj LibraryPractice/
 COPY Logic/Logic.csproj Logic/
 COPY SQLcon/SQLcon.csproj SQLcon/
 
+
+
 RUN dotnet restore
 
 # Copy the remaining files and build the application
-COPY . .
+
+ COPY . .
+
 WORKDIR /src/LibraryPractice
 RUN dotnet build -c Release -o /app/build
 
