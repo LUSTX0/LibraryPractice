@@ -45,7 +45,7 @@ jobs:
     #   id: get-version
     #   run: echo "::set-output name=new_version::$(nbgv get-version -p)"
     - name: Install NerdBank.GitVersioning
-        run: dotnet tool install -g NerdBank.GitVersioning --version "3.*"  # Установка NerdBank.GitVersioning
+      run: dotnet tool install -g NerdBank.GitVersioning --version "3.*"  # Установка NerdBank.GitVersioning
 
     - name: Determine version
       id: gitversion
