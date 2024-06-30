@@ -17,6 +17,9 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0  # Получает полную историю коммитов
+        
+    - name: Установка Nerdbank.GitVersioning
+      run: dotnet add package Nerdbank.GitVersioning
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
@@ -37,6 +40,7 @@ jobs:
     - name: Prepare release
       run: nbgv prepare-release
 
+    
     # - name: Update Swagger version
     #   run: |
     #     new_version=$(nbgv get-version)
