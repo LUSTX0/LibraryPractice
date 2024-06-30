@@ -9,6 +9,8 @@ using MySqlConnector;
 using System.Data.Entity;
 using LIBRARY2;
 using System.CodeDom;
+using Microsoft.OpenApi.Models;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +38,15 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = ThisAssembly.AssemblyInformationalVersion,
+        Title = "Library API",
+        Description = "This API is just a test task"
+    });
+});
 // Логи
 builder.Services.AddLogging();
 
@@ -47,7 +56,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+   // app.UseSwaggerUI();  //вернуть?
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", $"Your API v{ThisAssembly.AssemblyInformationalVersion}"));
 }
 else
 {
