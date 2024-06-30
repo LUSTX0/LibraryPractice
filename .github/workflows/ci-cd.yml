@@ -37,10 +37,15 @@ jobs:
     - name: Prepare release
       run: nbgv prepare-release
 
-    - name: Update Swagger version
-      run: |
-        new_version=$(nbgv get-version)
-        jq --arg new_version "$new_version" '.info.version = $new_version' ./swagger.json > temp.json && mv temp.json ./swagger.json
+    # - name: Update Swagger version
+    #   run: |
+    #     new_version=$(nbgv get-version)
+    - name: Get version
+      id: get-version
+      run: echo "::set-output name=new_version::$(nbgv get-version -p)"
+
+    - name: Print version
+      run: echo "The new version is ${{ steps.get-version.outputs.new_version }}"    
         
 
     - name: Build project
