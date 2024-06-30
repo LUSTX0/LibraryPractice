@@ -37,6 +37,11 @@ jobs:
     - name: Prepare release
       run: nbgv prepare-release
 
+    - name: Update Swagger version
+        run: |
+          new_version=$(nbgv get-version -v)
+          jq --arg new_version "$new_version" '.info.version = $new_version' ./swagger.json > temp.json && mv temp.json ./swagger.json
+
     - name: Build project
       run: dotnet build --configuration Release
 

@@ -39,7 +39,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-//test action #4
+//test action #5
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -74,11 +74,6 @@ app.UseRouting();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
-//app.UseEndpoints(endpoints =>                  //added 4
-//{
-//    endpoints.MapControllers();
-//});
 
 app.MapControllers();
 
