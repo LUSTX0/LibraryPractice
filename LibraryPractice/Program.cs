@@ -11,6 +11,9 @@ using LIBRARY2;
 using System.CodeDom;
 using Microsoft.OpenApi.Models;
 using System;
+using Newtonsoft.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Polly.CircuitBreaker;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,13 +41,42 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+var currentVersion = ThisAssembly.AssemblyInformationalVersion;
+if (currentVersion == "1.0.0")
+{
+    string jsonString = File.ReadAllText("versionCI.json");
+    var obj = JsonConvert.DeserializeObject<dynamic>(jsonString);
+    string version = obj.version;
+    bool status = obj.status;
+    if (!status)
+    {
+        bool isZero = int.TryParse(version.Split('.')[2],out int patch);
+        if (isZero)
+        {
+            version = string.Join('.', [version.Split('.')[0], version.Split('.')[1], (patch + 1).ToString()]);
+            obj.version = version;
+            obj.status = true;
+            File.WriteAllText("versionCI.json", JsonConvert.SerializeObject(obj));
+        }        
+    }
+    currentVersion = version;
+}
+else
+{    
+    var data = new
+    {
+        version = currentVersion,
+        status = false       
+    };    
+    File.WriteAllText("versionCI.json", JsonConvert.SerializeObject(data));
+}
 
 //test action #7
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = ThisAssembly.AssemblyInformationalVersion,
+        Version = currentVersion,
         Title = "Library API",
         Description = "This API is just a test task"
     });
@@ -59,7 +91,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
    // app.UseSwaggerUI();  //вернуть?
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", $"Your API v{ThisAssembly.AssemblyInformationalVersion}"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", $"Your API v{currentVersion}"));
 }
 else
 {
