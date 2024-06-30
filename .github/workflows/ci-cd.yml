@@ -40,12 +40,12 @@ jobs:
     # - name: Update Swagger version
     #   run: |
     #     new_version=$(nbgv get-version)
-    - name: Get version
-      id: get-version
-      run: echo "::set-output name=new_version::$(nbgv get-version -p)"
+    # - name: Get version
+    #   id: get-version
+    #   run: echo "::set-output name=new_version::$(nbgv get-version -p)"
 
-    - name: Print version
-      run: echo "The new version is ${{ steps.get-version.outputs.new_version }}"    
+    # - name: Print version
+    #   run: echo "The new version is ${{ steps.get-version.outputs.new_version }}"    
         
 
     - name: Build project
