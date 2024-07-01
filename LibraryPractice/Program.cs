@@ -33,45 +33,15 @@ builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IReportService, ReportService>();
-
 //builder.Services.AddScoped<IRepository<Book>>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-//builder.Services.AddScoped< IRepository<T>, Repository<T>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 var currentVersion = ThisAssembly.AssemblyInformationalVersion;
-if (currentVersion == "1.0.0")
-{
-    string jsonString = File.ReadAllText("versionCI.json");
-    var obj = JsonConvert.DeserializeObject<dynamic>(jsonString);
-    string version = obj.version;
-    bool status = obj.status;
-    if (!status)
-    {
-        bool isZero = int.TryParse(version.Split('.')[2],out int patch);
-        if (isZero)
-        {
-            version = string.Join('.', [version.Split('.')[0], version.Split('.')[1], (patch + 1).ToString()]);
-            obj.version = version;
-            obj.status = true;
-            File.WriteAllText("versionCI.json", JsonConvert.SerializeObject(obj));
-        }        
-    }
-    currentVersion = version;
-}
-else
-{    
-    var data = new
-    {
-        version = currentVersion,
-        status = false       
-    };    
-    File.WriteAllText("versionCI.json", JsonConvert.SerializeObject(data));
-}
+currentVersion = VersionCheck.Check(currentVersion);
 
-//test action #7
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -89,14 +59,13 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-   // app.UseSwaggerUI();  //вернуть?
+    app.UseSwagger();   
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", $"Your API v{currentVersion}"));
 }
 else
 {
     app.UseSwagger();  //временно
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", $"Your API v{currentVersion}"));
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>(); //added 2
