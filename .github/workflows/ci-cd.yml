@@ -14,12 +14,12 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0  # Получает полную историю коммитов
     
     - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.x'
 
@@ -35,9 +35,7 @@ jobs:
       run: dotnet tool install -g nbgv || true
 
     - name: Prepare release
-      run: nbgv prepare-release
-
-    
+      run: nbgv prepare-release    
 
     - name: Build project
       run: dotnet build --configuration Release
@@ -46,11 +44,10 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
     - name: Publish
-      run: dotnet publish -c Release -o ./out
-    
+      run: dotnet publish -c Release -o ./out    
 
     - name: Log in to Docker Hub
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
